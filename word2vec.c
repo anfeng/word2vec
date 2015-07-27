@@ -296,15 +296,16 @@ void LearnVocabFromTrainFile() {
 }
 
 void SaveVocab() {
-  long long i;
+  int i;
   FILE *fo = fopen(save_vocab_file, "wb");
-  for (i = 0; i < vocab_size; i++) fprintf(fo, "%s %lld\n", vocab[i].word, vocab[i].cn);
+  for (i = 0; i < vocab_size; i++) fprintf(fo, "%d %s %lld\n", i, vocab[i].word, vocab[i].cn);
   fclose(fo);
 }
 
 void ReadVocab() {
   long long a, i = 0;
   char c;
+  
   char word[MAX_STRING];
   FILE *fin = fopen(read_vocab_file, "rb");
   if (fin == NULL) {
@@ -313,7 +314,9 @@ void ReadVocab() {
   }
   for (a = 0; a < vocab_hash_size; a++) vocab_hash[a] = -1;
   vocab_size = 0;
+  int id;
   while (1) {
+    fscanf(fin, "%d", &id);
     ReadWord(word, fin);
     if (feof(fin)) break;
     a = AddWordToVocab(word);
